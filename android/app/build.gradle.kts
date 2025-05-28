@@ -9,6 +9,7 @@ android {
     namespace = "com.example.ausueben"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
+    minSdkVersion 21
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
