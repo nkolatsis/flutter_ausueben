@@ -23,7 +23,7 @@ class AdaptiveNavigation extends StatefulWidget {
 }
 
 class _AdaptiveNavigationState extends State<AdaptiveNavigation> {
-  int selectedIndex = 1;
+  int selectedIndex = 0;
 
   void setSelectedIndex(int index) {
     setState(() => selectedIndex = index);
@@ -150,6 +150,7 @@ class _CameraViewState extends State<CameraView> {
 
   void initCamera() async {
     cameras = await availableCameras();
+    print(cameras);
     _controller = CameraController(cameras[0], ResolutionPreset.max);
     _initializeControllerFuture = _controller.initialize();
   }
@@ -162,7 +163,15 @@ class _CameraViewState extends State<CameraView> {
 
   @override
   Widget build(BuildContext context) {
-    return Placeholder();
-    //return FutureBuilder<void>(future: future, builder: builder);
+    return FutureBuilder<void>(
+      future: _initializeControllerFuture,
+      builder: (context, snapshop) {
+        if (snapshop.connectionState == ConnectionState.done) {
+          return CameraPreview(_controller);
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 }
